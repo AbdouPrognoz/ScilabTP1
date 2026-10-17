@@ -1,0 +1,27 @@
+function [y, n, Table] = NEWTON(f, df, x0, e)
+    x = x0; 
+    n = 0; 
+    diff_x = e + 1; 
+    max_iter = 500; 
+    Table = [];
+    
+    while (diff_x >= e) & (n < max_iter)
+        fx = f(x); 
+        dfx = df(x);
+        
+        if abs(dfx) < 1e-14 then 
+            error("Derivative too close to zero."); 
+        end
+        
+        x_next = x - (fx / dfx);
+        diff_x = abs(x_next - x);
+        
+        Table = [Table; n, x, fx, diff_x];
+        
+        x = x_next; 
+        n = n + 1;
+    end
+    
+    Table = [Table; n, x, f(x), 0]; 
+    y = x;
+endfunction
